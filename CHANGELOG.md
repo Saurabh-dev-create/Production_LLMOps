@@ -18,3 +18,6 @@
 
 ### RCA Agent
 - Implemented RCA Agent using OpenAI API for Kubernetes root cause analysis
+
+### Remediation Agent
+- Enhanced remediation risk classification to detect both "rollback" and "roll back"
