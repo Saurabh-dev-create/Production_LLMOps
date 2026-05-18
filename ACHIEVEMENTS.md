@@ -16,3 +16,5 @@ Built an end-to-end AI incident response pipeline integrating collection, RCA, r
 Built a production-style API that executes the full AI incident response workflow and returns structured JSON
 
 Implemented integration tests to validate end-to-end API behavior and response contracts
+
+Created a production-style Helm chart for deploying the AI incident response platform

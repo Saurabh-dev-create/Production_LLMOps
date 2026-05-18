@@ -1,0 +1,13 @@
+replicaCount: 1
+
+image:
+  repository: kubernetes-incident-ai-copilot
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+env:
+  OPENAI_API_KEY: ""

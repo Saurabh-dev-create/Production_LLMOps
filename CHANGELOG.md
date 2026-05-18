@@ -33,3 +33,6 @@
 
 ### Integration
 - Added integration tests for the /analyze API endpoint
+
+### Helm
+- Added Helm chart for Kubernetes deployment
