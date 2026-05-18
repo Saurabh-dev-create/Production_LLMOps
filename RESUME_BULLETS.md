@@ -9,3 +9,5 @@
 - Developed an AI-powered Root Cause Analysis agent that used OpenAI models to generate structured diagnoses, severity ratings, confidence scores, and remediation recommendations for Kubernetes incidents.
 
 - Developed a notification service that transformed AI analysis and remediation plans into human-readable incident reports
+
+- Orchestrated a multi-agent Kubernetes incident response workflow using LangGraph to automate data collection, AI-based root cause analysis, remediation planning, and reporting

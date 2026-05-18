@@ -23,4 +23,7 @@
 - Enhanced remediation risk classification to detect both "rollback" and "roll back"
 
 ### Notifier Agent
-Implemented console-based incident notification formatter
+- Implemented console-based incident notification formatter
+
+### Langraph Part
+- Connected all agents using LangGraph orchestration

@@ -10,3 +10,5 @@
 - Built an AI RCA Agent that converts Kubernetes incident data into structured diagnoses and remediation recommendations.
 
 Created a notification component that generates structured incident reports
+
+Built an end-to-end AI incident response pipeline integrating collection, RCA, remediation, and reporting
