@@ -12,3 +12,5 @@
 Created a notification component that generates structured incident reports
 
 Built an end-to-end AI incident response pipeline integrating collection, RCA, remediation, and reporting
+
+Built a production-style API that executes the full AI incident response workflow and returns structured JSON

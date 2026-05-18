@@ -27,3 +27,6 @@
 
 ### Langraph Part
 - Connected all agents using LangGraph orchestration
+
+### API_Gateway
+- Added FastAPI API Gateway with /analyze endpoint

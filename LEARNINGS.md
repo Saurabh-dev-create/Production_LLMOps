@@ -18,3 +18,5 @@ Used JSON-only prompting and parsing to generate machine-readable root cause ana
 Built a reusable report formatter for incident summaries and remediation plans
 
 Used LangGraph StateGraph to coordinate multi-step AI workflows
+
+Exposed the LangGraph workflow through a REST API using FastAPI and automatic Swagger documentation
