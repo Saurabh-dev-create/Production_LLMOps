@@ -9,3 +9,6 @@ Occurs when a container repeatedly exits and Kubernetes backs off before restart
 
 ### Kubernetes Python Client
 Used CoreV1Api to retrieve pod information, events, and logs programmatically.
+
+### Structured LLM Output
+Used JSON-only prompting and parsing to generate machine-readable root cause analysis.

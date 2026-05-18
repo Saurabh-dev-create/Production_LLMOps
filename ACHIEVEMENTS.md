@@ -6,3 +6,5 @@
 - Created a real Kubernetes CrashLoopBackOff scenario for AI incident analysis.
 
 - Built a Collector Agent that converts live Kubernetes incidents into structured JSON for AI analysis.
+
+- Built an AI RCA Agent that converts Kubernetes incident data into structured diagnoses and remediation recommendations.
