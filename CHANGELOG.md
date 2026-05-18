@@ -30,3 +30,6 @@
 
 ### API_Gateway
 - Added FastAPI API Gateway with /analyze endpoint
+
+### Integration
+- Added integration tests for the /analyze API endpoint

@@ -13,3 +13,5 @@
 - Orchestrated a multi-agent Kubernetes incident response workflow using LangGraph to automate data collection, AI-based root cause analysis, remediation planning, and reporting
 
 - Developed a FastAPI-based API Gateway exposing a LangGraph-powered Kubernetes incident response workflow via REST endpoints and interactive Swagger documentation
+
+- Built integration tests using pytest and mocking to validate API contracts and end-to-end workflow behaviour
