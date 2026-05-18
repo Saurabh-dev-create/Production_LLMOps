@@ -12,3 +12,7 @@ Used CoreV1Api to retrieve pod information, events, and logs programmatically.
 
 ### Structured LLM Output
 Used JSON-only prompting and parsing to generate machine-readable root cause analysis.
+
+- Unit tests exposed a phrase-matching issue where "roll back" was not recognized as a risky action. Added support for multiple wording variations.
+
+Built a reusable report formatter for incident summaries and remediation plans

@@ -7,3 +7,5 @@
 - Developed a Kubernetes Collector Agent using the Python Kubernetes client to extract pod status, events, and logs as structured input for AI-driven root cause analysis.
 
 - Developed an AI-powered Root Cause Analysis agent that used OpenAI models to generate structured diagnoses, severity ratings, confidence scores, and remediation recommendations for Kubernetes incidents.
+
+- Developed a notification service that transformed AI analysis and remediation plans into human-readable incident reports

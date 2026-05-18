@@ -21,3 +21,6 @@
 
 ### Remediation Agent
 - Enhanced remediation risk classification to detect both "rollback" and "roll back"
+
+### Notifier Agent
+Implemented console-based incident notification formatter
