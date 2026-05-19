@@ -38,3 +38,5 @@ Created benchmark incident cases with expected outputs to support objective LLM 
 Built quantitative evaluation metrics to score LLM-generated analyses
 
 Built a fully automated evaluation pipeline for scoring LLM outputs against benchmark datasets
+
+Implemented automated quality gates that fail when model performance drops below acceptable thresholds

@@ -35,3 +35,5 @@
 - Developed an automated evaluation runner that benchmarked AI-generated root cause analyses and produced detailed quality reports
 
 - Generated Markdown evaluation reports with per-case scoring and automated pass/fail summaries
+
+- Implemented evaluation thresholds that automatically fail CI when model quality scores fall below target levels
