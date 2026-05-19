@@ -32,3 +32,5 @@ Built a semantic retriever that loads persisted embeddings and returns relevant 
 Combined semantic retrieval with LLM prompting to ground root cause analysis in operational runbooks
 
 Built an experiment framework to measure the impact of retrieval-augmented generation on analysis quality
+
+Created benchmark incident cases with expected outputs to support objective LLM evaluation

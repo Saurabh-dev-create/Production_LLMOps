@@ -1,0 +1,55 @@
+[
+  {
+    "name": "crashloopbackoff_case",
+    "incident_data": {
+      "pod_name": "crash-demo",
+      "namespace": "default",
+      "status": "CrashLoopBackOff",
+      "restart_count": 5,
+      "events": [
+        "Back-off restarting failed container"
+      ],
+      "logs": "Application exited with status code 1"
+    },
+    "expected": {
+      "root_cause_keywords": [
+        "exit",
+        "startup",
+        "command",
+        "application"
+      ],
+      "severity": "high",
+      "recommended_action_keywords": [
+        "logs",
+        "startup",
+        "redeploy"
+      ]
+    }
+  },
+  {
+    "name": "imagepullbackoff_case",
+    "incident_data": {
+      "pod_name": "image-demo",
+      "namespace": "default",
+      "status": "ImagePullBackOff",
+      "restart_count": 0,
+      "events": [
+        "Failed to pull image"
+      ],
+      "logs": ""
+    },
+    "expected": {
+      "root_cause_keywords": [
+        "image",
+        "repository",
+        "authentication"
+      ],
+      "severity": "high",
+      "recommended_action_keywords": [
+        "image",
+        "repository",
+        "credentials"
+      ]
+    }
+  }
+]

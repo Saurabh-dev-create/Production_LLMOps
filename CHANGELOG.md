@@ -43,3 +43,7 @@
 - Implemented RAG retriever using Chroma vector search
 - Integrated RAG retrieval into the RCA Agent
 - Added evaluation script to compare RCA quality with and without RAG
+
+
+### Evaluation
+- Added golden dataset for automated RCA evaluation
