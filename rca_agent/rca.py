@@ -4,13 +4,15 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 from rag.retriever import retrieve_context
+from prompts.loader import render_prompt
 
 load_dotenv()
 
 
 def analyze_incident(incident_data: dict) -> dict:
     """
-    Analyze Kubernetes incident using retrieved runbook context.
+    Analyze Kubernetes incident using retrieved runbook context
+    and versioned prompt templates.
     """
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
@@ -23,29 +25,15 @@ def analyze_incident(incident_data: dict) -> dict:
     # Retrieve relevant runbook context
     retrieved_context = retrieve_context(query)
 
-    prompt = f"""
-You are a senior Kubernetes Site Reliability Engineer.
+    # Render prompt from prompt registry
+    prompt = render_prompt(
+        "rca",
+        version="v2",  # Change to "v1" to test the earlier prompt
+        retrieved_context=retrieved_context,
+        incident_data=json.dumps(incident_data, indent=2)
+    )
 
-Use the provided runbook context and incident data to perform root cause analysis.
-
-RUNBOOK CONTEXT:
-{retrieved_context}
-
-INCIDENT DATA:
-{json.dumps(incident_data, indent=2)}
-
-Respond ONLY with valid JSON in this format:
-{{
-  "root_cause": "...",
-  "severity": "low|medium|high|critical",
-  "confidence": 0.0,
-  "recommended_actions": [
-    "...",
-    "..."
-  ]
-}}
-"""
-
+    # Call OpenAI
     response = client.responses.create(
         model="gpt-4.1-mini",
         input=prompt

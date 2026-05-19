@@ -57,3 +57,4 @@
 ### Prompts
 - Started Phase 4 by creating a centralized prompt registry
 - Added versioned RCA prompt templates (v1 and v2)
+- Integrated dynamic prompt loading into the RCA Agent

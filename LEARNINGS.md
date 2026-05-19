@@ -44,3 +44,5 @@ Implemented automated quality gates that fail when model performance drops below
 Externalized prompts into version-controlled template files
 
 Created multiple prompt versions to support structured experimentation
+
+Replaced hardcoded prompts with versioned templates loaded at runtime

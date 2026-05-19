@@ -43,3 +43,5 @@ Integrated evaluation and threshold checks into CI/CD to automatically block reg
 Established a prompt registry to support maintainable prompt engineering
 
 Established prompt versioning to compare instruction quality and performance
+
+Decoupled prompt engineering from application logic using a centralized registry
