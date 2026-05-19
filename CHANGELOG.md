@@ -52,3 +52,7 @@
 - Added Markdown report generation for evaluation results
 - Added regression threshold checks to enforce minimum evaluation scores
 - Added GitHub Actions pipeline for automated evaluation and regression checks
+
+
+### Prompts
+- Started Phase 4 by creating a centralized prompt registry

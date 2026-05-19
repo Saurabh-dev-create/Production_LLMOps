@@ -39,3 +39,5 @@
 - Implemented evaluation thresholds that automatically fail CI when model quality scores fall below target levels
 
 - Integrated automated LLM evaluation, reporting, and quality gates into GitHub Actions CI/CD pipelines
+
+- Built a centralized prompt registry with version-controlled templates for production LLM workflows
