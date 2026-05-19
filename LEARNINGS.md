@@ -28,3 +28,5 @@ Packaged the application as a reusable Helm chart with parameterized configurati
 Began organizing troubleshooting runbooks for retrieval-augmented generation
 
 Built a semantic retriever that loads persisted embeddings and returns relevant troubleshooting context
+
+Combined semantic retrieval with LLM prompting to ground root cause analysis in operational runbooks

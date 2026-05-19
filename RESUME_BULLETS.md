@@ -23,3 +23,5 @@
 - Implemented a retrieval-augmented generation pipeline that converted operational runbooks into vector embeddings stored in ChromaDB.
 
 - Developed a semantic retriever that queried ChromaDB to fetch relevant troubleshooting runbooks for retrieval-augmented root cause analysis
+
+- Integrated a RAG pipeline into the RCA Agent to ground Kubernetes root cause analysis in vectorized troubleshooting runbooks

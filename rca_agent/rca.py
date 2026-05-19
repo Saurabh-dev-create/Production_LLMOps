@@ -3,21 +3,38 @@ import json
 from dotenv import load_dotenv
 from openai import OpenAI
 
+from rag.retriever import retrieve_context
+
 load_dotenv()
 
 
 def analyze_incident(incident_data: dict) -> dict:
     """
-    Send incident data to an LLM and return structured RCA output.
+    Analyze Kubernetes incident using retrieved runbook context.
     """
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+    # Build a retrieval query from incident data
+    query = (
+        f"{incident_data.get('status', '')} "
+        f"{incident_data.get('logs', '')[:200]}"
+    )
+
+    # Retrieve relevant runbook context
+    retrieved_context = retrieve_context(query)
 
     prompt = f"""
 You are a senior Kubernetes Site Reliability Engineer.
 
-Analyze the following Kubernetes incident and respond ONLY with valid JSON.
+Use the provided runbook context and incident data to perform root cause analysis.
 
-Required JSON format:
+RUNBOOK CONTEXT:
+{retrieved_context}
+
+INCIDENT DATA:
+{json.dumps(incident_data, indent=2)}
+
+Respond ONLY with valid JSON in this format:
 {{
   "root_cause": "...",
   "severity": "low|medium|high|critical",
@@ -27,9 +44,6 @@ Required JSON format:
     "..."
   ]
 }}
-
-Incident Data:
-{json.dumps(incident_data, indent=2)}
 """
 
     response = client.responses.create(
@@ -39,7 +53,7 @@ Incident Data:
 
     content = response.output_text.strip()
 
-    # Remove Markdown fences if present
+    # Remove markdown fences if present
     if content.startswith("```"):
         lines = content.splitlines()
         content = "\n".join(
@@ -56,4 +70,5 @@ if __name__ == "__main__":
 
     incident = collect_incident_data()
     analysis = analyze_incident(incident)
+
     pprint(analysis)
