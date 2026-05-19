@@ -42,3 +42,5 @@ Built a fully automated evaluation pipeline for scoring LLM outputs against benc
 Implemented automated quality gates that fail when model performance drops below acceptable thresholds
 
 Externalized prompts into version-controlled template files
+
+Created multiple prompt versions to support structured experimentation
