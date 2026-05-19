@@ -29,3 +29,5 @@
 - Developed an evaluation framework to compare baseline and RAG-enhanced root cause analysis and quantify improvements in groundedness and actionability
 
 - Created a benchmark dataset of Kubernetes incidents and expected outcomes to support automated LLM evaluation and regression testing
+
+- Implemented automated scoring functions to evaluate AI-generated root cause analyses using keyword overlap and severity accuracy metrics

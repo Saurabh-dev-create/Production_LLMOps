@@ -29,3 +29,5 @@ Converted the RCA Agent into a retrieval-augmented analysis system using Chroma 
 Demonstrated measurable improvement in RCA groundedness by comparing baseline and RAG-enhanced outputs
 
 Built a golden dataset for measuring AI root cause analysis quality
+
+Developed a scoring engine that converts LLM outputs into objective quality metrics

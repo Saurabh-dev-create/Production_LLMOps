@@ -34,3 +34,5 @@ Combined semantic retrieval with LLM prompting to ground root cause analysis in 
 Built an experiment framework to measure the impact of retrieval-augmented generation on analysis quality
 
 Created benchmark incident cases with expected outputs to support objective LLM evaluation
+
+Built quantitative evaluation metrics to score LLM-generated analyses
