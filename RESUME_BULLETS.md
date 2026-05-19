@@ -19,3 +19,5 @@
 - Packaged the application into a Helm chart to enable parameterized, repeatable Kubernetes deployments
 
 - Built a RAG knowledge base using operational runbooks to provide grounded AI recommendations for Kubernetes incident analysis
+
+- Implemented a retrieval-augmented generation pipeline that converted operational runbooks into vector embeddings stored in ChromaDB.

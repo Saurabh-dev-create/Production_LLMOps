@@ -7,3 +7,8 @@ python-dotenv
 pytest
 requests
 kubernetes
+langchain-community
+langchain-openai
+chromadb
+tiktoken
+markdown

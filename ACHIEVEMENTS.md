@@ -20,3 +20,4 @@ Implemented integration tests to validate end-to-end API behavior and response c
 Created a production-style Helm chart for deploying the AI incident response platform
 
 Established a document-based knowledge base to ground AI root cause analysis
+Built a vectorized knowledge base from Kubernetes troubleshooting runbooks.
