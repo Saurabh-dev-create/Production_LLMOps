@@ -9,7 +9,7 @@ from prompts.loader import render_prompt
 load_dotenv()
 
 
-def analyze_incident(incident_data: dict) -> dict:
+def analyze_incident(incident_data: dict, prompt_version: str = "v2") -> dict:
     """
     Analyze Kubernetes incident using retrieved runbook context
     and versioned prompt templates.
@@ -28,7 +28,7 @@ def analyze_incident(incident_data: dict) -> dict:
     # Render prompt from prompt registry
     prompt = render_prompt(
         "rca",
-        version="v2",  # Change to "v1" to test the earlier prompt
+        version=prompt_version,
         retrieved_context=retrieved_context,
         incident_data=json.dumps(incident_data, indent=2)
     )
