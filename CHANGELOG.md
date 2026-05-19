@@ -36,3 +36,6 @@
 
 ### Helm
 - Added Helm chart for Kubernetes deployment
+
+### RAG BASE
+- Started creating the RAG knowledge base structure

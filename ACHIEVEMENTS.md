@@ -18,3 +18,5 @@ Built a production-style API that executes the full AI incident response workflo
 Implemented integration tests to validate end-to-end API behavior and response contracts
 
 Created a production-style Helm chart for deploying the AI incident response platform
+
+Established a document-based knowledge base to ground AI root cause analysis

@@ -24,3 +24,5 @@ Exposed the LangGraph workflow through a REST API using FastAPI and automatic Sw
 Used mocking to test API behavior independently of Kubernetes and external LLM services
 
 Packaged the application as a reusable Helm chart with parameterized configuration
+
+Began organizing troubleshooting runbooks for retrieval-augmented generation
