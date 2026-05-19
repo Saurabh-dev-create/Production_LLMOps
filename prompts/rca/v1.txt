@@ -9,7 +9,7 @@ INCIDENT DATA:
 {incident_data}
 
 Respond ONLY with valid JSON in this format:
-{
+{{
   "root_cause": "...",
   "severity": "low|medium|high|critical",
   "confidence": 0.0,
@@ -17,4 +17,4 @@ Respond ONLY with valid JSON in this format:
     "...",
     "..."
   ]
-}
+}}
