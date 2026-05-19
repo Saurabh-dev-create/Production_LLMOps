@@ -21,3 +21,5 @@
 - Built a RAG knowledge base using operational runbooks to provide grounded AI recommendations for Kubernetes incident analysis
 
 - Implemented a retrieval-augmented generation pipeline that converted operational runbooks into vector embeddings stored in ChromaDB.
+
+- Developed a semantic retriever that queried ChromaDB to fetch relevant troubleshooting runbooks for retrieval-augmented root cause analysis

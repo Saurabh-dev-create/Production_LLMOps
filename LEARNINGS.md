@@ -26,3 +26,5 @@ Used mocking to test API behavior independently of Kubernetes and external LLM s
 Packaged the application as a reusable Helm chart with parameterized configuration
 
 Began organizing troubleshooting runbooks for retrieval-augmented generation
+
+Built a semantic retriever that loads persisted embeddings and returns relevant troubleshooting context

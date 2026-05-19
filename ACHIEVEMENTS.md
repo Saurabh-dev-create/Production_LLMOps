@@ -21,3 +21,5 @@ Created a production-style Helm chart for deploying the AI incident response pla
 
 Established a document-based knowledge base to ground AI root cause analysis
 Built a vectorized knowledge base from Kubernetes troubleshooting runbooks.
+
+Added vector-based retrieval to ground AI analysis with operational runbooks

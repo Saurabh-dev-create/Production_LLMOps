@@ -40,3 +40,4 @@
 ### RAG BASE
 - Started creating the RAG knowledge base structure
 - Implemented RAG document ingestion pipeline using ChromaDB and OpenAI embeddings
+- Implemented RAG retriever using Chroma vector search
