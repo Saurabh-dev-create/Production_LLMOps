@@ -33,3 +33,5 @@
 - Implemented automated scoring functions to evaluate AI-generated root cause analyses using keyword overlap and severity accuracy metrics
 
 - Developed an automated evaluation runner that benchmarked AI-generated root cause analyses and produced detailed quality reports
+
+- Generated Markdown evaluation reports with per-case scoring and automated pass/fail summaries

@@ -33,3 +33,5 @@ Built a golden dataset for measuring AI root cause analysis quality
 Developed a scoring engine that converts LLM outputs into objective quality metrics
 
 Created an evaluation runner that measures AI performance and generates structured reports
+
+Created human-readable evaluation reports summarizing model performance and pass/fail status
