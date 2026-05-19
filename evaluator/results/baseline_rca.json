@@ -1,0 +1,12 @@
+{
+  "root_cause": "The container in the pod crash-demo-6b8dd5549f-74lwc is crashing repeatedly causing a CrashLoopBackOff. The logs only show 'Starting application' with no further output before the crash, indicating that the application inside the container likely exits immediately after startup.",
+  "severity": "medium",
+  "confidence": 0.8,
+  "recommended_actions": [
+    "Inspect the container entrypoint or command to verify that it is configured correctly and not causing immediate exit.",
+    "Run the container image interactively to troubleshoot why the application is exiting.",
+    "Check the application code or script inside the container for errors or missing dependencies causing it to terminate.",
+    "Add more detailed logging or error handling to the application to capture failure reasons.",
+    "If the container is not intended to have a long-running process, update the pod definition accordingly or use an init container."
+  ]
+}

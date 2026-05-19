@@ -1,0 +1,11 @@
+{
+  "root_cause": "The container repeatedly exits shortly after starting, likely due to the application terminating unexpectedly or having no long-running process. The logs only show 'Starting application' and nothing else, indicating the container's main process may be exiting immediately, causing CrashLoopBackOff.",
+  "severity": "medium",
+  "confidence": 0.8,
+  "recommended_actions": [
+    "Verify the container's startup command and ensure it runs a long-lived process.",
+    "Check the application code or scripts for premature exit or failure.",
+    "Add more detailed logging inside the container to capture the reason for exit.",
+    "Confirm environment variables and dependencies needed by the application are correctly configured."
+  ]
+}

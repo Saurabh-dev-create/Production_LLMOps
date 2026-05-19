@@ -25,3 +25,5 @@ Built a vectorized knowledge base from Kubernetes troubleshooting runbooks.
 Added vector-based retrieval to ground AI analysis with operational runbooks
 
 Converted the RCA Agent into a retrieval-augmented analysis system using Chroma and OpenAI embeddings
+
+Demonstrated measurable improvement in RCA groundedness by comparing baseline and RAG-enhanced outputs

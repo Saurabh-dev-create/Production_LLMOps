@@ -30,3 +30,5 @@ Began organizing troubleshooting runbooks for retrieval-augmented generation
 Built a semantic retriever that loads persisted embeddings and returns relevant troubleshooting context
 
 Combined semantic retrieval with LLM prompting to ground root cause analysis in operational runbooks
+
+Built an experiment framework to measure the impact of retrieval-augmented generation on analysis quality
