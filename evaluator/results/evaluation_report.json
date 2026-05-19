@@ -1,0 +1,46 @@
+{
+  "average_overall_score": 0.416,
+  "num_cases": 2,
+  "cases": [
+    {
+      "name": "crashloopbackoff_case",
+      "scores": {
+        "root_cause_score": 0.5,
+        "severity_score": 0.0,
+        "recommended_actions_score": 0.667,
+        "overall_score": 0.389
+      },
+      "result": {
+        "root_cause": "Application exited with non-zero status code 1 causing the container to repeatedly crash.",
+        "severity": "medium",
+        "confidence": 1.0,
+        "recommended_actions": [
+          "Check application logs in detail to identify why the application is exiting with status code 1.",
+          "Verify that all required environment variables are set correctly for the application.",
+          "Ensure that any dependencies the application needs are available and healthy.",
+          "Validate the startup command and arguments configured for the container."
+        ]
+      }
+    },
+    {
+      "name": "imagepullbackoff_case",
+      "scores": {
+        "root_cause_score": 0.667,
+        "severity_score": 0.0,
+        "recommended_actions_score": 0.667,
+        "overall_score": 0.444
+      },
+      "result": {
+        "root_cause": "Pod is in ImagePullBackOff status due to failure to pull the container image, likely caused by an incorrect image name, tag, or lack of access to the image repository.",
+        "severity": "medium",
+        "confidence": 0.9,
+        "recommended_actions": [
+          "Verify the image name and tag specified in the pod spec are correct.",
+          "Check if the image repository requires authentication and ensure that proper imagePullSecrets are configured.",
+          "Verify network connectivity to the image registry.",
+          "Check registry status to ensure it is operational."
+        ]
+      }
+    }
+  ]
+}

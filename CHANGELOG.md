@@ -48,3 +48,4 @@
 ### Evaluation
 - Added golden dataset for automated RCA evaluation
 - Implemented automated scoring functions for root cause, severity, and remediation quality
+- Added automated evaluation runner that executes benchmark cases and generates reports

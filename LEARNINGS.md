@@ -36,3 +36,5 @@ Built an experiment framework to measure the impact of retrieval-augmented gener
 Created benchmark incident cases with expected outputs to support objective LLM evaluation
 
 Built quantitative evaluation metrics to score LLM-generated analyses
+
+Built a fully automated evaluation pipeline for scoring LLM outputs against benchmark datasets
