@@ -37,3 +37,5 @@ Created an evaluation runner that measures AI performance and generates structur
 Created human-readable evaluation reports summarizing model performance and pass/fail status
 
 Added regression detection to block degraded prompt and model changes
+
+Integrated evaluation and threshold checks into CI/CD to automatically block regressions

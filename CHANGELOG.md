@@ -51,3 +51,4 @@
 - Added automated evaluation runner that executes benchmark cases and generates reports
 - Added Markdown report generation for evaluation results
 - Added regression threshold checks to enforce minimum evaluation scores
+- Added GitHub Actions pipeline for automated evaluation and regression checks
