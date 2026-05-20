@@ -59,3 +59,6 @@
 - Added versioned RCA prompt templates (v1 and v2)
 - Integrated dynamic prompt loading into the RCA Agent
 - Added automated prompt A/B testing and version comparison
+
+### Adding Guardrails
+- Added Pydantic schema for structured RCA validation

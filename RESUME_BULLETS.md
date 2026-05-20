@@ -48,3 +48,5 @@ A/B testing of LLM instructions
 - Integrated a dynamic prompt registry into the RCA Agent, enabling version-controlled prompt experimentation without code changes
 
 - Built an automated prompt A/B testing system that evaluated versioned templates and selected the highest-performing prompt using benchmark datasets
+
+- Defined Pydantic schemas to enforce structured and validated LLM outputs
