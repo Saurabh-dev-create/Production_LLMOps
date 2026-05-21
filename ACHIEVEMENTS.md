@@ -55,3 +55,5 @@ Enforced strongly typed validation on AI-generated RCA responses before downstre
 Added robust retry mechanisms to improve reliability of AI-generated structured responses
 
 Implemented risk classification and human approval controls for remediation actions
+
+Added production-grade tracing and observability for AI workflows

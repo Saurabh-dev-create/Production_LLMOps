@@ -56,3 +56,5 @@ A/B testing of LLM instructions
 - Implemented automatic retry logic that corrected malformed LLM outputs and ensured validated structured responses
 
 - Built safety guardrails that classified remediation actions by risk and enforced human approval for high-impact operations
+
+- Integrated LangSmith tracing to monitor prompts, latency, retrieved context, and model responses across AI workflows
