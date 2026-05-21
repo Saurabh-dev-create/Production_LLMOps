@@ -54,3 +54,5 @@ A/B testing of LLM instructions
 - Integrated Pydantic-based runtime validation to enforce schema correctness for LLM-generated outputs
 
 - Implemented automatic retry logic that corrected malformed LLM outputs and ensured validated structured responses
+
+- Built safety guardrails that classified remediation actions by risk and enforced human approval for high-impact operations

@@ -64,3 +64,4 @@
 - Added Pydantic schema for structured RCA validation
 - Integrated Pydantic validation into the RCA Agent
 - Added automatic retry logic for invalid JSON and schema validation failures
+- Added remediation safety checks and approval requirements
