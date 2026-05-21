@@ -2,22 +2,29 @@ import os
 import json
 from dotenv import load_dotenv
 from openai import OpenAI
-from guardrails.schemas import RCAResponse
 
+from guardrails.schemas import RCAResponse
 from rag.retriever import retrieve_context
 from prompts.loader import render_prompt
 
 load_dotenv()
 
 
-def analyze_incident(incident_data: dict, prompt_version: str = "v2") -> dict:
+def analyze_incident(
+    incident_data: dict,
+    prompt_version: str = "v2",
+    max_retries: int = 3
+) -> dict:
     """
-    Analyze Kubernetes incident using retrieved runbook context
-    and versioned prompt templates.
+    Analyze Kubernetes incident using:
+    - RAG (retrieved runbook context)
+    - Versioned prompt templates
+    - Pydantic schema validation
+    - Automatic retry logic
     """
     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-    # Build a retrieval query from incident data
+    # Build retrieval query from incident data
     query = (
         f"{incident_data.get('status', '')} "
         f"{incident_data.get('logs', '')[:200]}"
@@ -26,7 +33,7 @@ def analyze_incident(incident_data: dict, prompt_version: str = "v2") -> dict:
     # Retrieve relevant runbook context
     retrieved_context = retrieve_context(query)
 
-    # Render prompt from prompt registry
+    # Render prompt from the prompt registry
     prompt = render_prompt(
         "rca",
         version=prompt_version,
@@ -34,27 +41,60 @@ def analyze_incident(incident_data: dict, prompt_version: str = "v2") -> dict:
         incident_data=json.dumps(incident_data, indent=2)
     )
 
-    # Call OpenAI
-    response = client.responses.create(
-        model="gpt-4.1-mini",
-        input=prompt
-    )
+    # Retry loop
+    for attempt in range(1, max_retries + 1):
+        try:
+            print(f"RCA attempt {attempt}/{max_retries}")
 
-    content = response.output_text.strip()
+            # Call OpenAI
+            response = client.responses.create(
+                model="gpt-4.1-mini",
+                input=prompt
+            )
 
-    # Remove markdown fences if present
-    if content.startswith("```"):
-        lines = content.splitlines()
-        content = "\n".join(
-            line for line in lines
-            if not line.startswith("```")
-        ).strip()
+            content = response.output_text.strip()
 
-    parsed = json.loads(content)
+            # Remove markdown code fences if present
+            if content.startswith("```"):
+                lines = content.splitlines()
+                content = "\n".join(
+                    line for line in lines
+                    if not line.startswith("```")
+                ).strip()
 
-    validated = RCAResponse(**parsed)
+            # Parse JSON
+            parsed = json.loads(content)
 
-    return validated.model_dump()
+            # Validate against Pydantic schema
+            validated = RCAResponse(**parsed)
+
+            # Return validated dictionary
+            return validated.model_dump()
+
+        except Exception as e:
+            print(f"Attempt {attempt} failed: {e}")
+
+            # Re-raise the exception after final attempt
+            if attempt == max_retries:
+                raise
+
+            # Append corrective instructions for the next retry
+            prompt += """
+
+IMPORTANT:
+Your previous response was invalid.
+
+Return ONLY valid JSON matching this exact schema:
+{
+  "root_cause": "...",
+  "severity": "low|medium|high|critical",
+  "confidence": 0.0,
+  "recommended_actions": [
+    "...",
+    "..."
+  ]
+}
+"""
 
 
 if __name__ == "__main__":
