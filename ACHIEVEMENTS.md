@@ -61,3 +61,5 @@ Added production-grade tracing and observability for AI workflows
 Added production-grade tracing for AI workflows using LangSmith
 
 Added operational metrics and cost observability to AI workflows
+
+Added persistent observability logging for latency, token usage, and API cost analytics

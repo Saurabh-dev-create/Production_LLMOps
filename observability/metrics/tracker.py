@@ -1,4 +1,7 @@
+import json
 import time
+from datetime import datetime
+from pathlib import Path
 from pprint import pprint
 
 
@@ -8,6 +11,8 @@ MODEL_PRICING = {
         "output_per_million": 1.60
     }
 }
+
+LOG_FILE = Path("observability/logs/metrics.json")
 
 
 def calculate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
@@ -30,6 +35,27 @@ def calculate_cost(model: str, input_tokens: int, output_tokens: int) -> float:
     return round(input_cost + output_cost, 6)
 
 
+def save_metrics(metrics: dict):
+    """
+    Persist metrics to JSON log file.
+    """
+    LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    existing_logs = []
+
+    if LOG_FILE.exists():
+        try:
+            with open(LOG_FILE, "r") as f:
+                existing_logs = json.load(f)
+        except json.JSONDecodeError:
+            existing_logs = []
+
+    existing_logs.append(metrics)
+
+    with open(LOG_FILE, "w") as f:
+        json.dump(existing_logs, f, indent=2)
+
+
 def track_execution(start_time, response, model="gpt-4.1-mini"):
     """
     Track latency, token usage, and estimated cost.
@@ -48,12 +74,15 @@ def track_execution(start_time, response, model="gpt-4.1-mini"):
     )
 
     metrics = {
+        "timestamp": datetime.utcnow().isoformat(),
         "model": model,
         "latency_seconds": latency,
         "input_tokens": input_tokens,
         "output_tokens": output_tokens,
         "estimated_cost_usd": estimated_cost
     }
+
+    save_metrics(metrics)
 
     pprint(metrics)
 

@@ -62,3 +62,5 @@ A/B testing of LLM instructions
 - Integrated LangSmith tracing into multi-agent AI workflows to monitor prompts, outputs, latency, and execution behavior
 
 - Implemented token monitoring, latency tracking, and API cost estimation for production-grade LLM workflows
+
+- Built persistent observability pipelines for AI workflows, including latency tracking, token analytics, and cost monitoring

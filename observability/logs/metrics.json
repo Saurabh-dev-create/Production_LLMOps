@@ -1,0 +1,26 @@
+[
+  {
+    "timestamp": "2026-05-21T08:14:25.919013",
+    "model": "gpt-4.1-mini",
+    "latency_seconds": 6.55,
+    "input_tokens": 421,
+    "output_tokens": 128,
+    "estimated_cost_usd": 0.000373
+  },
+  {
+    "timestamp": "2026-05-21T08:14:50.598023",
+    "model": "gpt-4.1-mini",
+    "latency_seconds": 5.43,
+    "input_tokens": 421,
+    "output_tokens": 127,
+    "estimated_cost_usd": 0.000372
+  },
+  {
+    "timestamp": "2026-05-21T08:15:17.236257",
+    "model": "gpt-4.1-mini",
+    "latency_seconds": 6.73,
+    "input_tokens": 421,
+    "output_tokens": 139,
+    "estimated_cost_usd": 0.000391
+  }
+]

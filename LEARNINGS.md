@@ -56,3 +56,5 @@ Integrated tracing infrastructure for monitoring LLM workflows
 Instrumented LLM calls with tracing to observe prompts, outputs, and latency
 
 Learned how to track latency, token consumption, and API costs for production AI workflows
+
+Learned how to persist operational metrics and generate observability analytics for AI systems
