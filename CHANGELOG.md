@@ -71,3 +71,4 @@
 - Added LangSmith tracing to RCA workflow
 - Added token usage monitoring and API cost estimation
 - Added persistent metrics logging and observability reports
+- Added observability dashboards and visualization layer

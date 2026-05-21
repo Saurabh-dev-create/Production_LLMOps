@@ -64,3 +64,5 @@ A/B testing of LLM instructions
 - Implemented token monitoring, latency tracking, and API cost estimation for production-grade LLM workflows
 
 - Built persistent observability pipelines for AI workflows, including latency tracking, token analytics, and cost monitoring
+
+- Developed operational dashboards for AI observability, including latency, token usage, and API cost analytics
