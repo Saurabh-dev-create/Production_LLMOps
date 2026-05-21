@@ -68,3 +68,5 @@
 
 ### Tracing Using LANGSMITH
 - Added LangSmith observability integration
+- Added LangSmith tracing to RCA workflow
+-  Added token usage monitoring and API cost estimation

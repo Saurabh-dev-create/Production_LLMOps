@@ -1,12 +1,14 @@
 import os
 import json
+import time
 from dotenv import load_dotenv
 from openai import OpenAI
 
 from guardrails.schemas import RCAResponse
 from rag.retriever import retrieve_context
 from prompts.loader import render_prompt
-
+from observability.tracing import traced_analysis
+from observability.metrics.tracker import track_execution
 load_dotenv()
 
 
@@ -45,11 +47,17 @@ def analyze_incident(
     for attempt in range(1, max_retries + 1):
         try:
             print(f"RCA attempt {attempt}/{max_retries}")
-
+            start_time = time.time()
             # Call OpenAI
-            response = client.responses.create(
-                model="gpt-4.1-mini",
-                input=prompt
+            response = traced_analysis(
+              client.responses.create,
+              model="gpt-4.1-mini",
+              input=prompt
+              ) 
+            metrics = track_execution(
+            start_time,
+            response,
+            model="gpt-4.1-mini"
             )
 
             content = response.output_text.strip()

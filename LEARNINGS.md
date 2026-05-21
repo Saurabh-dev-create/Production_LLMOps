@@ -52,3 +52,7 @@ Added runtime schema validation to ensure all LLM outputs conform to strict stru
 Implemented self-healing LLM calls that retry automatically when outputs are malformed
 
 Integrated tracing infrastructure for monitoring LLM workflows
+
+Instrumented LLM calls with tracing to observe prompts, outputs, and latency
+
+Learned how to track latency, token consumption, and API costs for production AI workflows

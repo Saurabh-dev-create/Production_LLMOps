@@ -57,3 +57,7 @@ Added robust retry mechanisms to improve reliability of AI-generated structured 
 Implemented risk classification and human approval controls for remediation actions
 
 Added production-grade tracing and observability for AI workflows
+
+Added production-grade tracing for AI workflows using LangSmith
+
+Added operational metrics and cost observability to AI workflows

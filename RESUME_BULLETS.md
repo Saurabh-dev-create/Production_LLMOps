@@ -58,3 +58,7 @@ A/B testing of LLM instructions
 - Built safety guardrails that classified remediation actions by risk and enforced human approval for high-impact operations
 
 - Integrated LangSmith tracing to monitor prompts, latency, retrieved context, and model responses across AI workflows
+
+- Integrated LangSmith tracing into multi-agent AI workflows to monitor prompts, outputs, latency, and execution behavior
+
+- Implemented token monitoring, latency tracking, and API cost estimation for production-grade LLM workflows

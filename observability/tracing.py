@@ -1,4 +1,3 @@
-import os
 from dotenv import load_dotenv
 from langsmith import traceable
 
@@ -7,7 +6,4 @@ load_dotenv()
 
 @traceable(name="k8s_incident_analysis")
 def traced_analysis(func, *args, **kwargs):
-    """
-    Wrapper for traced RCA execution.
-    """
     return func(*args, **kwargs)
