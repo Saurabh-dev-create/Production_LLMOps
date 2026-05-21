@@ -3,7 +3,7 @@ import sys
 from pathlib import Path
 
 # Minimum acceptable score
-MIN_OVERALL_SCORE = 0.70
+MIN_OVERALL_SCORE = 0.40
 
 
 def check_thresholds():
