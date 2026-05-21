@@ -62,3 +62,4 @@
 
 ### Adding Guardrails
 - Added Pydantic schema for structured RCA validation
+- Integrated Pydantic validation into the RCA Agent

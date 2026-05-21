@@ -50,3 +50,5 @@ A/B testing of LLM instructions
 - Built an automated prompt A/B testing system that evaluated versioned templates and selected the highest-performing prompt using benchmark datasets
 
 - Defined Pydantic schemas to enforce structured and validated LLM outputs
+
+- Integrated Pydantic-based runtime validation to enforce schema correctness for LLM-generated outputs

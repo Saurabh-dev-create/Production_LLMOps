@@ -2,6 +2,7 @@ import os
 import json
 from dotenv import load_dotenv
 from openai import OpenAI
+from guardrails.schemas import RCAResponse
 
 from rag.retriever import retrieve_context
 from prompts.loader import render_prompt
@@ -49,7 +50,11 @@ def analyze_incident(incident_data: dict, prompt_version: str = "v2") -> dict:
             if not line.startswith("```")
         ).strip()
 
-    return json.loads(content)
+    parsed = json.loads(content)
+
+    validated = RCAResponse(**parsed)
+
+    return validated.model_dump()
 
 
 if __name__ == "__main__":
