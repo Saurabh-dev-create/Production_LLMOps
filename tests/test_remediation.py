@@ -12,6 +12,11 @@ def test_generate_remediation_plan():
     result = generate_remediation_plan(rca_result)
 
     assert len(result["actions"]) == 2
+
+    # Restart is safe
     assert result["actions"][0]["risk"] == "safe"
-    assert result["actions"][1]["risk"] == "risky"
+    assert result["actions"][0]["requires_approval"] is False
+
+    # Rollback is medium risk and requires approval
+    assert result["actions"][1]["risk"] == "medium"
     assert result["actions"][1]["requires_approval"] is True
