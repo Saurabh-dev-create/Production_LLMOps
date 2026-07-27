@@ -55,18 +55,41 @@ def get_experiments(
     return experiments
 
 
+def get_experiment_name(
+    experiment: dict[str, Any],
+) -> str | None:
+    config = experiment.get("config")
+
+    if isinstance(config, dict):
+        name = config.get("name")
+
+        if name:
+            return str(name)
+
+    name = experiment.get("experiment_name")
+
+    if name:
+        return str(name)
+
+    name = experiment.get("name")
+
+    if name:
+        return str(name)
+
+    return None
+
 def find_experiment(
     experiments: list[dict[str, Any]],
     experiment_name: str,
 ) -> dict[str, Any]:
     for experiment in experiments:
-        if experiment.get("experiment_name") == experiment_name:
+        if get_experiment_name(experiment) == experiment_name:
             return experiment
 
     available_names = sorted(
-        str(experiment.get("experiment_name"))
+        name
         for experiment in experiments
-        if experiment.get("experiment_name")
+        if (name := get_experiment_name(experiment))
     )
 
     available_text = (
@@ -116,13 +139,11 @@ def compare_experiments(
         thresholds=thresholds,
     )
 
-    result["baseline_experiment"] = baseline.get(
-        "experiment_name",
-        "unknown",
+    result["baseline_experiment"] = (
+        get_experiment_name(baseline) or "unknown"
     )
-    result["candidate_experiment"] = candidate.get(
-        "experiment_name",
-        "unknown",
+    result["candidate_experiment"] = (
+        get_experiment_name(candidate) or "unknown"
     )
 
     return result
