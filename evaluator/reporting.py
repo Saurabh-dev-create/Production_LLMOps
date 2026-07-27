@@ -30,8 +30,11 @@ def generate_markdown_report(summary: dict) -> str:
         "",
         "## Experiment Leaderboard",
         "",
-        "| Rank | Experiment | Prompt | RAG | Model | Score | Cases |",
-        "|---:|---|---|---|---|---:|---:|",
+        (
+            "| Rank | Experiment | Prompt | RAG | Model | Score | "
+            "Latency (ms) | Tokens | Cost (USD) | Cases |"
+        ),
+        "|---:|---|---|---|---|---:|---:|---:|---:|---:|",
     ]
 
     for rank, experiment in enumerate(experiments, start=1):
@@ -45,6 +48,9 @@ def generate_markdown_report(summary: dict) -> str:
             f"{'Enabled' if config['use_rag'] else 'Disabled'} | "
             f"{config['model']} | "
             f"{experiment['average_overall_score']:.3f} | "
+            f"{experiment.get('average_latency_ms', 0):.2f} | "
+            f"{experiment.get('total_tokens', 0)} | "
+            f"{experiment.get('estimated_total_cost_usd', 0):.6f} | "
             f"{experiment['num_cases']} |"
         )
 
@@ -60,18 +66,41 @@ def generate_markdown_report(summary: dict) -> str:
             f"- Score: `{best_experiment['average_overall_score']:.3f}`",
             f"- Model: `{best_experiment['config']['model']}`",
             f"- Cases evaluated: `{best_experiment['num_cases']}`",
+            (
+                f"- Average latency: "
+                f"`{best_experiment.get('average_latency_ms', 0):.2f} ms`"
+            ),
+            (
+                f"- Total tokens: "
+                f"`{best_experiment.get('total_tokens', 0)}`"
+            ),
+            (
+                f"- Estimated cost: "
+                f"`${best_experiment.get('estimated_total_cost_usd', 0):.6f}`"
+            ),
             "",
             "## Case Breakdown",
             "",
-            "| Incident | Overall Score |",
-            "|---|---:|",
+            (
+                "| Incident | Score | Latency (ms) | Prompt Tokens | "
+                "Completion Tokens | Total Tokens | Cost (USD) |"
+            ),
+            "|---|---:|---:|---:|---:|---:|---:|",
         ]
     )
 
     for case in best_experiment["cases"]:
+        metrics = case.get("metrics", {})
+
         lines.append(
-            f"| {case['name']} | "
-            f"{case['scores']['overall_score']:.3f} |"
+            "| "
+            f"{case['name']} | "
+            f"{case['scores']['overall_score']:.3f} | "
+            f"{metrics.get('latency_ms', 0):.2f} | "
+            f"{metrics.get('prompt_tokens', 0)} | "
+            f"{metrics.get('completion_tokens', 0)} | "
+            f"{metrics.get('total_tokens', 0)} | "
+            f"{metrics.get('estimated_cost_usd', 0):.6f} |"
         )
 
     lines.extend(

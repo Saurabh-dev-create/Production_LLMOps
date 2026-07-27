@@ -6,6 +6,7 @@ from evaluator.scoring import overall_score
 from rca_agent.rca import analyze_incident
 from evaluator.datasets.loader import load_dataset
 from evaluator.reporting import write_markdown_report
+from time import perf_counter
 
 RESULTS_DIR = Path("evaluator/results")
 OUTPUT_FILE = RESULTS_DIR / "experiment_results.json"
@@ -41,7 +42,33 @@ EXPERIMENTS = [
         use_rag=True,
     ),
 ]
+def extract_usage_metrics(result: dict) -> dict:
+    metadata = result.get("_metadata", {})
+    usage = metadata.get("usage", {})
 
+    prompt_tokens = int(usage.get("prompt_tokens", 0))
+    completion_tokens = int(usage.get("completion_tokens", 0))
+
+    total_tokens = int(
+        usage.get(
+            "total_tokens",
+            prompt_tokens + completion_tokens,
+        )
+    )
+
+    estimated_cost_usd = float(
+        metadata.get("estimated_cost_usd", 0.0)
+    )
+
+    return {
+        "prompt_tokens": prompt_tokens,
+        "completion_tokens": completion_tokens,
+        "total_tokens": total_tokens,
+        "estimated_cost_usd": round(
+            estimated_cost_usd,
+            6,
+        ),
+    }
 def run_single_experiment(
     config: ExperimentConfig,
     dataset: list[dict],
@@ -52,12 +79,22 @@ def run_single_experiment(
     for case in dataset:
         print(f"  Evaluating case: {case['name']}")
 
+        started_at = perf_counter()
+
         result = analyzer(
-            case["incident_data"],
-            prompt_version=config.prompt_version,
-            use_rag=config.use_rag,
-            model=config.model,
+           case["incident_data"],
+           prompt_version=config.prompt_version,
+           use_rag=config.use_rag,
+           model=config.model,
         )
+
+        latency_ms = round(
+           (perf_counter() - started_at) * 1000,
+           2,
+        )
+
+        metrics = extract_usage_metrics(result)
+        metrics["latency_ms"] = latency_ms
 
         scores = overall_score(result, case["expected"])
 
@@ -65,6 +102,7 @@ def run_single_experiment(
             {
                 "name": case["name"],
                 "scores": scores,
+                "metrics": metrics,
                 "result": result,
             }
         )
@@ -73,10 +111,42 @@ def run_single_experiment(
         item["scores"]["overall_score"]
         for item in case_results
     ) / len(case_results)
+    average_latency_ms = sum(
+        item["metrics"]["latency_ms"]
+        for item in case_results
+    ) / len(case_results)
+
+    total_prompt_tokens = sum(
+        item["metrics"]["prompt_tokens"]
+        for item in case_results
+   )
+
+    total_completion_tokens = sum(
+        item["metrics"]["completion_tokens"]
+        for item in case_results
+   )
+
+    total_tokens = sum(
+        item["metrics"]["total_tokens"]
+        for item in case_results
+   )
+
+    estimated_total_cost_usd = sum(
+        item["metrics"]["estimated_cost_usd"]
+        for item in case_results
+  )
 
     return {
         "config": asdict(config),
         "average_overall_score": round(average_score, 3),
+        "average_latency_ms": round(average_latency_ms, 2),
+        "total_prompt_tokens": total_prompt_tokens,
+        "total_completion_tokens": total_completion_tokens,
+        "total_tokens": total_tokens,
+          "estimated_total_cost_usd": round(
+             estimated_total_cost_usd,
+             6,
+        ),
         "num_cases": len(case_results),
         "cases": case_results,
     }

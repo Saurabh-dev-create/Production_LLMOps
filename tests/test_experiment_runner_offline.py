@@ -17,6 +17,14 @@ def fake_analyzer(
             "Retry requests using exponential backoff.",
             "Review the provider quota.",
         ],
+        "_metadata": {
+            "usage": {
+                "prompt_tokens": 120,
+                "completion_tokens": 80,
+                "total_tokens": 200,
+            },
+            "estimated_cost_usd": 0.00012,
+        },
     }
 
 
@@ -58,3 +66,18 @@ def test_experiment_runner_executes_offline(tmp_path, monkeypatch):
 
     assert "# Production LLMOps Evaluation Report" in report
     assert "Experiment Leaderboard" in report
+
+    for experiment in summary["experiments"]:
+        assert experiment["total_prompt_tokens"] == 120
+        assert experiment["total_completion_tokens"] == 80
+        assert experiment["total_tokens"] == 200
+        assert experiment["estimated_total_cost_usd"] == 0.00012
+        assert experiment["average_latency_ms"] >= 0
+
+        case = experiment["cases"][0]
+
+        assert case["metrics"]["prompt_tokens"] == 120
+        assert case["metrics"]["completion_tokens"] == 80
+        assert case["metrics"]["total_tokens"] == 200
+        assert case["metrics"]["estimated_cost_usd"] == 0.00012
+        assert case["metrics"]["latency_ms"] >= 0
