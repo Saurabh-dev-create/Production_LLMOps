@@ -5,10 +5,11 @@ from pathlib import Path
 from evaluator.scoring import overall_score
 from rca_agent.rca import analyze_incident
 from evaluator.datasets.loader import load_dataset
+from evaluator.reporting import write_markdown_report
 
 RESULTS_DIR = Path("evaluator/results")
 OUTPUT_FILE = RESULTS_DIR / "experiment_results.json"
-
+REPORT_FILE = RESULTS_DIR / "evaluation_report.md"
 
 @dataclass(frozen=True)
 class ExperimentConfig:
@@ -40,10 +41,6 @@ EXPERIMENTS = [
         use_rag=True,
     ),
 ]
-
-
-
-
 
 def run_single_experiment(
     config: ExperimentConfig,
@@ -120,11 +117,15 @@ def run_experiments(max_cases: int | None = None,
         json.dumps(summary, indent=2),
         encoding="utf-8",
     )
+    write_markdown_report(
+      summary,
+      REPORT_FILE,
+    )
 
     print("\nExperiment run complete.")
     print(f"Best experiment: {summary['best_experiment']}")
     print(f"Results saved to: {OUTPUT_FILE}")
-
+    print(f"Markdown report saved to: {REPORT_FILE}")
     return summary
 
 

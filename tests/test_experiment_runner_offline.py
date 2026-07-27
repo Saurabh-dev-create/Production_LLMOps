@@ -22,11 +22,17 @@ def fake_analyzer(
 
 def test_experiment_runner_executes_offline(tmp_path, monkeypatch):
     output_file = tmp_path / "experiment_results.json"
+    report_file = tmp_path / "evaluation_report.md"
 
     monkeypatch.setattr(
         experiment_runner,
         "OUTPUT_FILE",
         output_file,
+    )
+    monkeypatch.setattr(
+        experiment_runner,
+        "REPORT_FILE",
+        report_file,
     )
     monkeypatch.setattr(
         experiment_runner,
@@ -44,4 +50,11 @@ def test_experiment_runner_executes_offline(tmp_path, monkeypatch):
         experiment["num_cases"] == 1
         for experiment in summary["experiments"]
     )
+
     assert output_file.exists()
+    assert report_file.exists()
+
+    report = report_file.read_text(encoding="utf-8")
+
+    assert "# Production LLMOps Evaluation Report" in report
+    assert "Experiment Leaderboard" in report
