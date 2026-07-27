@@ -84,8 +84,14 @@ def run_single_experiment(
     }
 
 
-def run_experiments() -> dict:
+def run_experiments(max_cases: int | None = None) -> dict:
     dataset = load_dataset()
+    if max_cases is not None:
+       if max_cases < 1:
+         raise ValueError("max_cases must be at least 1")
+
+       dataset = dataset[:max_cases]
+
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
     experiment_results = []
@@ -121,4 +127,17 @@ def run_experiments() -> dict:
 
 
 if __name__ == "__main__":
-    run_experiments()
+    import argparse
+
+    parser = argparse.ArgumentParser(
+        description="Run prompt and RAG experiments."
+    )
+    parser.add_argument(
+        "--max-cases",
+        type=int,
+        default=None,
+        help="Limit the number of incident cases.",
+    )
+
+    args = parser.parse_args()
+    run_experiments(max_cases=args.max_cases)
