@@ -15,6 +15,8 @@ load_dotenv()
 def analyze_incident(
     incident_data: dict,
     prompt_version: str = "v2",
+    use_rag: bool = True,
+    model: str = "gpt-4.1-mini",
     max_retries: int = 3
 ) -> dict:
     """
@@ -33,7 +35,11 @@ def analyze_incident(
     )
 
     # Retrieve relevant runbook context
-    retrieved_context = retrieve_context(query)
+    retrieved_context = (
+          retrieve_context(query)
+          if use_rag
+          else "No additional runbook context was provided."
+          )
 
     # Render prompt from the prompt registry
     prompt = render_prompt(
@@ -51,13 +57,13 @@ def analyze_incident(
             # Call OpenAI
             response = traced_analysis(
               client.responses.create,
-              model="gpt-4.1-mini",
+              model=model,
               input=prompt
               ) 
             metrics = track_execution(
             start_time,
             response,
-            model="gpt-4.1-mini"
+            model=model
             )
 
             content = response.output_text.strip()
