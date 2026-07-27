@@ -9,3 +9,6 @@ venv/
 __pycache__/
 *.py[cod]
 .pytest_cache/
+# Generated evaluation outputs
+evaluator/results/*.json
+evaluator/results/*.md
