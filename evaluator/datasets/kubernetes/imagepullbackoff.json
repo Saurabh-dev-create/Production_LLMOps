@@ -1,0 +1,26 @@
+{
+  "name": "imagepullbackoff_case",
+  "incident_data": {
+    "pod_name": "image-demo",
+    "namespace": "default",
+    "status": "ImagePullBackOff",
+    "restart_count": 0,
+    "events": [
+      "Failed to pull image"
+    ],
+    "logs": ""
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "image",
+      "repository",
+      "authentication"
+    ],
+    "severity": "high",
+    "recommended_action_keywords": [
+      "image",
+      "repository",
+      "credentials"
+    ]
+  }
+}

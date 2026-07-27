@@ -1,0 +1,26 @@
+{
+  "name": "api_rate_limit_case",
+  "incident_data": {
+    "pod_name": "llm-gateway",
+    "namespace": "production",
+    "status": "Degraded",
+    "restart_count": 0,
+    "events": [
+      "External API returned HTTP 429"
+    ],
+    "logs": "Rate limit exceeded for upstream model provider"
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "rate",
+      "limit",
+      "429"
+    ],
+    "severity": "medium",
+    "recommended_action_keywords": [
+      "retry",
+      "backoff",
+      "quota"
+    ]
+  }
+}

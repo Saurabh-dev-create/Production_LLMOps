@@ -1,0 +1,27 @@
+{
+  "name": "node_not_ready_case",
+  "incident_data": {
+    "pod_name": "inventory-api",
+    "namespace": "production",
+    "status": "NodeNotReady",
+    "restart_count": 0,
+    "events": [
+      "Node worker-3 status is now NodeNotReady",
+      "Pod eviction timeout exceeded"
+    ],
+    "logs": "Kubelet stopped reporting node status"
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "node",
+      "kubelet",
+      "unavailable"
+    ],
+    "severity": "critical",
+    "recommended_action_keywords": [
+      "node",
+      "kubelet",
+      "reschedule"
+    ]
+  }
+}

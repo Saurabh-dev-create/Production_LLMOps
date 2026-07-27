@@ -1,0 +1,26 @@
+{
+  "name": "service_timeout_case",
+  "incident_data": {
+    "pod_name": "frontend-api",
+    "namespace": "production",
+    "status": "Degraded",
+    "restart_count": 0,
+    "events": [
+      "Upstream request timed out after 30 seconds"
+    ],
+    "logs": "Connection to inventory-service timed out"
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "timeout",
+      "upstream",
+      "latency"
+    ],
+    "severity": "high",
+    "recommended_action_keywords": [
+      "latency",
+      "dependency",
+      "timeout"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "oomkilled_case",
+  "incident_data": {
+    "pod_name": "payments-api",
+    "namespace": "production",
+    "status": "OOMKilled",
+    "restart_count": 8,
+    "events": [
+      "Container exceeded memory limit",
+      "Killing container due to out of memory"
+    ],
+    "logs": "Process terminated after memory usage reached container limit"
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "memory",
+      "limit",
+      "oom"
+    ],
+    "severity": "high",
+    "recommended_action_keywords": [
+      "memory",
+      "limit",
+      "profile"
+    ]
+  }
+}

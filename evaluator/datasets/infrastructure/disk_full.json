@@ -1,0 +1,26 @@
+{
+  "name": "disk_full_case",
+  "incident_data": {
+    "pod_name": "logging-agent",
+    "namespace": "observability",
+    "status": "Degraded",
+    "restart_count": 2,
+    "events": [
+      "Node filesystem usage exceeded 98 percent"
+    ],
+    "logs": "No space left on device while writing log segment"
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "disk",
+      "space",
+      "filesystem"
+    ],
+    "severity": "critical",
+    "recommended_action_keywords": [
+      "cleanup",
+      "storage",
+      "retention"
+    ]
+  }
+}

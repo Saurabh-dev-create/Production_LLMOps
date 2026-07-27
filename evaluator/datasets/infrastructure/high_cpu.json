@@ -1,0 +1,26 @@
+{
+  "name": "high_cpu_case",
+  "incident_data": {
+    "pod_name": "analytics-api",
+    "namespace": "production",
+    "status": "Degraded",
+    "restart_count": 0,
+    "events": [
+      "CPU usage exceeded 95 percent for 15 minutes"
+    ],
+    "logs": "Request processing latency increased significantly"
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "cpu",
+      "saturation",
+      "load"
+    ],
+    "severity": "high",
+    "recommended_action_keywords": [
+      "profile",
+      "scale",
+      "cpu"
+    ]
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "failed_scheduling_case",
+  "incident_data": {
+    "pod_name": "recommendation-worker",
+    "namespace": "production",
+    "status": "Pending",
+    "restart_count": 0,
+    "events": [
+      "0/6 nodes are available: insufficient cpu",
+      "Preemption is not helpful for scheduling"
+    ],
+    "logs": ""
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "cpu",
+      "capacity",
+      "scheduling"
+    ],
+    "severity": "high",
+    "recommended_action_keywords": [
+      "resources",
+      "scale",
+      "requests"
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "dns_failure_case",
+  "incident_data": {
+    "pod_name": "orders-api",
+    "namespace": "production",
+    "status": "Degraded",
+    "restart_count": 0,
+    "events": [
+      "DNS resolution failed for payments-service"
+    ],
+    "logs": "Temporary failure in name resolution"
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "dns",
+      "resolution",
+      "coredns"
+    ],
+    "severity": "high",
+    "recommended_action_keywords": [
+      "dns",
+      "coredns",
+      "service"
+    ]
+  }
+}

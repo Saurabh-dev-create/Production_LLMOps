@@ -1,15 +1,15 @@
-import json
-from pathlib import Path
+from evaluator.datasets.loader import load_dataset
 
 
-def test_golden_dataset_exists_and_loads():
-    dataset_path = Path("evaluator/datasets/golden_dataset.json")
+def test_dataset_loader_loads_all_incidents():
+    dataset = load_dataset()
 
-    assert dataset_path.exists()
+    assert len(dataset) >= 15
 
-    data = json.loads(dataset_path.read_text(encoding="utf-8"))
+    names = {case["name"] for case in dataset}
 
-    assert isinstance(data, list)
-    assert len(data) >= 2
-    assert "incident_data" in data[0]
-    assert "expected" in data[0]
+    assert "crashloopbackoff_case" in names
+    assert "imagepullbackoff_case" in names
+    assert "oomkilled_case" in names
+    assert "node_not_ready_case" in names
+    assert "database_connection_failure_case" in names

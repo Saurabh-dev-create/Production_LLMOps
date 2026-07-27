@@ -1,0 +1,27 @@
+{
+  "name": "pvc_pending_case",
+  "incident_data": {
+    "pod_name": "postgres-0",
+    "namespace": "production",
+    "status": "Pending",
+    "restart_count": 0,
+    "events": [
+      "PersistentVolumeClaim is not bound",
+      "No persistent volumes available for this claim"
+    ],
+    "logs": ""
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "volume",
+      "claim",
+      "storage"
+    ],
+    "severity": "high",
+    "recommended_action_keywords": [
+      "storageclass",
+      "volume",
+      "provisioner"
+    ]
+  }
+}

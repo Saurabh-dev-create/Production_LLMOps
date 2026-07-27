@@ -1,0 +1,26 @@
+{
+  "name": "readiness_probe_failure_case",
+  "incident_data": {
+    "pod_name": "checkout-api",
+    "namespace": "production",
+    "status": "RunningNotReady",
+    "restart_count": 0,
+    "events": [
+      "Readiness probe failed: HTTP probe returned statuscode 503"
+    ],
+    "logs": "Dependency initialization is incomplete"
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "readiness",
+      "dependency",
+      "503"
+    ],
+    "severity": "high",
+    "recommended_action_keywords": [
+      "probe",
+      "dependency",
+      "endpoint"
+    ]
+  }
+}

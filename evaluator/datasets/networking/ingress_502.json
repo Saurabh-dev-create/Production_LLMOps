@@ -1,0 +1,26 @@
+{
+  "name": "ingress_502_case",
+  "incident_data": {
+    "pod_name": "web-api",
+    "namespace": "production",
+    "status": "Unavailable",
+    "restart_count": 0,
+    "events": [
+      "Ingress returned HTTP 502 Bad Gateway"
+    ],
+    "logs": "Upstream service has no healthy endpoints"
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "upstream",
+      "endpoint",
+      "ingress"
+    ],
+    "severity": "critical",
+    "recommended_action_keywords": [
+      "service",
+      "endpoints",
+      "ingress"
+    ]
+  }
+}

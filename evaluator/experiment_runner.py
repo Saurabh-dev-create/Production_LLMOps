@@ -4,9 +4,8 @@ from pathlib import Path
 
 from evaluator.scoring import overall_score
 from rca_agent.rca import analyze_incident
+from evaluator.datasets.loader import load_dataset
 
-
-DATASET_PATH = Path("evaluator/datasets/golden_dataset.json")
 RESULTS_DIR = Path("evaluator/results")
 OUTPUT_FILE = RESULTS_DIR / "experiment_results.json"
 
@@ -43,8 +42,7 @@ EXPERIMENTS = [
 ]
 
 
-def load_dataset() -> list[dict]:
-    return json.loads(DATASET_PATH.read_text(encoding="utf-8"))
+
 
 
 def run_single_experiment(

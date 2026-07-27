@@ -1,0 +1,27 @@
+{
+  "name": "memory_pressure_case",
+  "incident_data": {
+    "pod_name": "search-api",
+    "namespace": "production",
+    "status": "Degraded",
+    "restart_count": 1,
+    "events": [
+      "Node has memory pressure",
+      "Available memory is below eviction threshold"
+    ],
+    "logs": "Application memory consumption continues to grow"
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "memory",
+      "pressure",
+      "leak"
+    ],
+    "severity": "high",
+    "recommended_action_keywords": [
+      "memory",
+      "profile",
+      "scale"
+    ]
+  }
+}

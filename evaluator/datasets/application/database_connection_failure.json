@@ -1,0 +1,26 @@
+{
+  "name": "database_connection_failure_case",
+  "incident_data": {
+    "pod_name": "billing-api",
+    "namespace": "production",
+    "status": "CrashLoopBackOff",
+    "restart_count": 6,
+    "events": [
+      "Container restarted after database initialization failure"
+    ],
+    "logs": "Connection refused while connecting to postgres:5432"
+  },
+  "expected": {
+    "root_cause_keywords": [
+      "database",
+      "connection",
+      "refused"
+    ],
+    "severity": "critical",
+    "recommended_action_keywords": [
+      "database",
+      "connectivity",
+      "credentials"
+    ]
+  }
+}
