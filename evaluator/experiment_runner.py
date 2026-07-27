@@ -48,13 +48,14 @@ EXPERIMENTS = [
 def run_single_experiment(
     config: ExperimentConfig,
     dataset: list[dict],
+    analyzer=analyze_incident,
 ) -> dict:
     case_results = []
 
     for case in dataset:
         print(f"  Evaluating case: {case['name']}")
 
-        result = analyze_incident(
+        result = analyzer(
             case["incident_data"],
             prompt_version=config.prompt_version,
             use_rag=config.use_rag,
@@ -84,7 +85,8 @@ def run_single_experiment(
     }
 
 
-def run_experiments(max_cases: int | None = None) -> dict:
+def run_experiments(max_cases: int | None = None,
+                    analyzer=analyze_incident,) -> dict:
     dataset = load_dataset()
     if max_cases is not None:
        if max_cases < 1:
@@ -100,7 +102,7 @@ def run_experiments(max_cases: int | None = None) -> dict:
         print(f"\nRunning experiment: {config.name}")
 
         experiment_results.append(
-            run_single_experiment(config, dataset)
+            run_single_experiment(config, dataset,analyzer=analyzer)
         )
 
     ranked_results = sorted(
