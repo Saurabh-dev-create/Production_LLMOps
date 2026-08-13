@@ -16,3 +16,4 @@ pandas
 matplotlib
 
 langsmith
+unstructured[md]

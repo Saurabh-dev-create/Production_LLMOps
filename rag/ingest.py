@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from langchain_community.document_loaders import DirectoryLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
+from rag.retriever import EMBEDDING_MODEL
 from langchain_chroma import Chroma
 
 load_dotenv()
@@ -31,7 +32,9 @@ def ingest_documents():
     chunks = splitter.split_documents(documents)
 
     # Create embeddings
-    embeddings = OpenAIEmbeddings()
+    embeddings = OpenAIEmbeddings(
+           model=EMBEDDING_MODEL
+            )
 
     # Store in Chroma
     vectorstore = Chroma.from_documents(

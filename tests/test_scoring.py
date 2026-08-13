@@ -13,10 +13,10 @@ def test_keyword_overlap_score():
     assert score == 1.0
 
 
-def test_severity_score():
+def test_severiity_score():
     assert severity_score("high", "high") == 1.0
-    assert severity_score("medium", "high") == 0.0
-
+    assert severity_score("medium", "high") == 0.5
+    assert severity_score("low", "critical") == 0.0
 
 def test_overall_score():
     result = {

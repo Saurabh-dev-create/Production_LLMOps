@@ -1,14 +1,17 @@
-import os
 import json
+import os
 import time
+
 from dotenv import load_dotenv
 from openai import OpenAI
 
 from guardrails.schemas import RCAResponse
-from rag.retriever import retrieve_context
-from prompts.loader import render_prompt
-from observability.tracing import traced_analysis
 from observability.metrics.tracker import track_execution
+from observability.tracing import traced_analysis
+from prompts.loader import render_prompt
+from rag.retriever import retrieve_context
+
+
 load_dotenv()
 
 
@@ -17,82 +20,124 @@ def analyze_incident(
     prompt_version: str = "v2",
     use_rag: bool = True,
     model: str = "gpt-4.1-mini",
-    max_retries: int = 3
+    max_retries: int = 3,
 ) -> dict:
     """
     Analyze Kubernetes incident using:
-    - RAG (retrieved runbook context)
-    - Versioned prompt templates
+    - optional RAG context
+    - versioned prompt templates
     - Pydantic schema validation
-    - Automatic retry logic
+    - automatic retry logic
+    - LLM usage, latency, and cost metadata
     """
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    client = OpenAI(
+        api_key=os.getenv("OPENAI_API_KEY")
+    )
 
-    # Build retrieval query from incident data
     query = (
         f"{incident_data.get('status', '')} "
         f"{incident_data.get('logs', '')[:200]}"
     )
 
-    # Retrieve relevant runbook context
     retrieved_context = (
-          retrieve_context(query)
-          if use_rag
-          else "No additional runbook context was provided."
-          )
+        retrieve_context(query)
+        if use_rag
+        else "No additional runbook context was provided."
+    )
 
-    # Render prompt from the prompt registry
     prompt = render_prompt(
         "rca",
         version=prompt_version,
         retrieved_context=retrieved_context,
-        incident_data=json.dumps(incident_data, indent=2)
+        incident_data=json.dumps(
+            incident_data,
+            indent=2,
+        ),
     )
 
-    # Retry loop
     for attempt in range(1, max_retries + 1):
         try:
-            print(f"RCA attempt {attempt}/{max_retries}")
+            print(
+                f"RCA attempt {attempt}/{max_retries}"
+            )
+
             start_time = time.time()
-            # Call OpenAI
+
             response = traced_analysis(
-              client.responses.create,
-              model=model,
-              input=prompt
-              ) 
+                client.responses.create,
+                model=model,
+                input=prompt,
+            )
+
             metrics = track_execution(
-            start_time,
-            response,
-            model=model
+                start_time,
+                response,
+                model=model,
             )
 
             content = response.output_text.strip()
 
-            # Remove markdown code fences if present
             if content.startswith("```"):
                 lines = content.splitlines()
                 content = "\n".join(
-                    line for line in lines
+                    line
+                    for line in lines
                     if not line.startswith("```")
                 ).strip()
 
-            # Parse JSON
             parsed = json.loads(content)
 
-            # Validate against Pydantic schema
             validated = RCAResponse(**parsed)
 
-            # Return validated dictionary
-            return validated.model_dump()
+            result = validated.model_dump()
 
-        except Exception as e:
-            print(f"Attempt {attempt} failed: {e}")
+            input_tokens = int(
+                metrics.get(
+                    "input_tokens",
+                    0,
+                )
+            )
 
-            # Re-raise the exception after final attempt
+            output_tokens = int(
+                metrics.get(
+                    "output_tokens",
+                    0,
+                )
+            )
+
+            result["_metadata"] = {
+                "model": model,
+                "usage": {
+                    "prompt_tokens": input_tokens,
+                    "completion_tokens": output_tokens,
+                    "total_tokens": (
+                        input_tokens + output_tokens
+                    ),
+                },
+                "estimated_cost_usd": float(
+                    metrics.get(
+                        "estimated_cost_usd",
+                        0.0,
+                    )
+                ),
+                "inference_latency_seconds": float(
+                    metrics.get(
+                        "latency_seconds",
+                        0.0,
+                    )
+                ),
+            }
+
+            return result
+
+        except Exception as exc:
+            print(
+                f"Attempt {attempt} failed: {exc}"
+            )
+
             if attempt == max_retries:
                 raise
 
-            # Append corrective instructions for the next retry
             prompt += """
 
 IMPORTANT:
@@ -112,10 +157,16 @@ Return ONLY valid JSON matching this exact schema:
 
 
 if __name__ == "__main__":
-    from collector_agent.collector import collect_incident_data
     from pprint import pprint
 
+    from collector_agent.collector import (
+        collect_incident_data,
+    )
+
     incident = collect_incident_data()
-    analysis = analyze_incident(incident)
+
+    analysis = analyze_incident(
+        incident
+    )
 
     pprint(analysis)
