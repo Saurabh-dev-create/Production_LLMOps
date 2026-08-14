@@ -1,49 +1,92 @@
 from pathlib import Path
-from dotenv import load_dotenv
 
-from langchain_community.document_loaders import DirectoryLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings
-from rag.retriever import EMBEDDING_MODEL
+from dotenv import load_dotenv
 from langchain_chroma import Chroma
+from langchain_core.documents import Document
+from langchain_openai import OpenAIEmbeddings
+from langchain_text_splitters import (
+    RecursiveCharacterTextSplitter,
+)
+
+from rag.retriever import EMBEDDING_MODEL
+
 
 load_dotenv()
 
 
-def ingest_documents():
-    documents_path = Path("rag/documents")
-    persist_directory = "rag/vector_store"
+DOCUMENTS_PATH = Path("rag/documents")
+PERSIST_DIRECTORY = "rag/vector_store"
 
-    # Load all Markdown documents
-    loader = DirectoryLoader(
-        str(documents_path),
-        glob="**/*.md"
-    )
-    documents = loader.load()
+
+def load_runbooks() -> list[Document]:
+    """
+    Load Markdown runbooks directly from disk.
+
+    This avoids the deprecated langchain-community document loader
+    while preserving source metadata required by retrieval evaluation.
+    """
+    documents = []
+
+    for path in sorted(
+        DOCUMENTS_PATH.rglob("*.md")
+    ):
+        content = path.read_text(
+            encoding="utf-8"
+        ).strip()
+
+        if not content:
+            continue
+
+        documents.append(
+            Document(
+                page_content=content,
+                metadata={
+                    "source": str(path),
+                },
+            )
+        )
 
     if not documents:
-        raise ValueError("No documents found in rag/documents")
+        raise ValueError(
+            "No documents found in rag/documents"
+        )
 
-    # Split into chunks
+    return documents
+
+
+def ingest_documents() -> Chroma:
+    """
+    Load, chunk, embed, and persist operational runbooks.
+    """
+    documents = load_runbooks()
+
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=500,
-        chunk_overlap=50
+        chunk_overlap=50,
     )
-    chunks = splitter.split_documents(documents)
 
-    # Create embeddings
+    chunks = splitter.split_documents(
+        documents
+    )
+
     embeddings = OpenAIEmbeddings(
-           model=EMBEDDING_MODEL
-            )
+        model=EMBEDDING_MODEL
+    )
 
-    # Store in Chroma
     vectorstore = Chroma.from_documents(
         documents=chunks,
         embedding=embeddings,
-        persist_directory=persist_directory
+        persist_directory=PERSIST_DIRECTORY,
     )
 
-    print(f"Ingested {len(chunks)} chunks into {persist_directory}")
+    print(
+        f"Loaded {len(documents)} runbooks."
+    )
+
+    print(
+        f"Ingested {len(chunks)} chunks "
+        f"into {PERSIST_DIRECTORY}"
+    )
 
     return vectorstore
 
