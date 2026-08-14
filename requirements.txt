@@ -15,3 +15,5 @@ pandas
 matplotlib
 
 langsmith
+
+langchain-text-splitters
