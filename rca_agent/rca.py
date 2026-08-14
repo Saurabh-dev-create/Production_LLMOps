@@ -9,7 +9,10 @@ from guardrails.schemas import RCAResponse
 from observability.metrics.tracker import track_execution
 from observability.tracing import traced_analysis
 from prompts.loader import render_prompt
-from rag.retriever import retrieve_context
+from rag.retriever import (
+    build_retrieval_query,
+    retrieve_context,
+)
 
 
 load_dotenv()
@@ -34,9 +37,9 @@ def analyze_incident(
         api_key=os.getenv("OPENAI_API_KEY")
     )
 
-    query = (
-        f"{incident_data.get('status', '')} "
-        f"{incident_data.get('logs', '')[:200]}"
+    # Build retrieval query from diagnostic incident evidence.
+    query = build_retrieval_query(
+        incident_data
     )
 
     retrieved_context = (

@@ -12,6 +12,38 @@ PERSIST_DIRECTORY = "rag/vector_store"
 EMBEDDING_MODEL = "text-embedding-3-small"
 
 
+
+def build_retrieval_query(
+    incident_data: dict,
+) -> str:
+    """
+    Build a retrieval query from diagnostically useful incident
+    evidence.
+
+    Status, Kubernetes events, and logs carry the strongest signals
+    for selecting the correct operational runbook.
+    """
+    parts = []
+
+    status = incident_data.get("status")
+    if status:
+        parts.append(str(status))
+
+    events = incident_data.get("events", [])
+
+    if isinstance(events, list):
+        parts.extend(
+            str(event)
+            for event in events
+            if event
+        )
+
+    logs = incident_data.get("logs")
+    if logs:
+        parts.append(str(logs)[:500])
+
+    return " ".join(parts).strip()
+
 def get_vectorstore() -> Chroma:
     """
     Load the persisted Chroma vector store using the same embedding
