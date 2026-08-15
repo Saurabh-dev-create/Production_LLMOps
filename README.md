@@ -76,6 +76,16 @@ The resulting workflow is also exposed through a FastAPI API.
 
 ---
 
+## Running System — Early Proof of Work
+
+The incident-analysis workflow is exposed through a FastAPI API, providing a working entry point into the Kubernetes RCA pipeline.
+
+![Kubernetes Incident Analysis API](docs/images/incident-analysis-api.png)
+
+The `POST /analyze` endpoint executes the incident workflow and returns structured analysis results. This provides an early proof point that the project is an executable system rather than only an architecture or evaluation exercise.
+
+---
+
 ## Architecture
 
 ```text
@@ -273,6 +283,14 @@ The evaluation framework can compare prompt versions against the same benchmark 
 
 ---
 
+### RAG Impact Analysis
+
+RAG effectiveness is evaluated per incident rather than assumed to improve every RCA. The evaluation pipeline compares identical incident scenarios with and without retrieval and classifies the impact as **HELPED**, **HURT**, or **NEUTRAL**.
+
+![RAG Impact Analysis](docs/images/rag-impact-analysis.png)
+
+This analysis exposed cases where retrieved context degraded RCA quality, providing evidence for retrieval tuning, runbook expansion, and selective RAG usage instead of enabling retrieval blindly for every incident. 
+
 ## RAG Evaluation
 
 One of the main goals of this project was to test retrieval separately from generation.
@@ -396,13 +414,6 @@ The CI pipeline runs regression tests, generates deterministic experiment result
 
 ![Prompt Quality Gate CI Pipeline](docs/images/prompt-quality-gate-ci.png)
 
-### RAG Impact Analysis
-
-RAG effectiveness is evaluated per incident rather than assumed to improve every RCA. The evaluation pipeline compares identical incident scenarios with and without retrieval and classifies the impact as **HELPED**, **HURT**, or **NEUTRAL**.
-
-![RAG Impact Analysis](docs/images/rag-impact-analysis.png)
-
-This analysis exposed cases where retrieved context degraded RCA quality, providing evidence for retrieval tuning, runbook expansion, and selective RAG usage instead of enabling retrieval blindly for every incident.
 
 ### RAG Retrieval Gate
 
