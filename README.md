@@ -328,7 +328,41 @@ evaluation_report.md
 
 The purpose is not to claim that a single score proves model quality. The evaluation suite is primarily a regression mechanism: when prompts, retrieval, or model configuration change, I want a repeatable way to detect whether known cases became worse.
 
+
+## LLM Evaluation & Experimentation
+
+The platform includes an automated evaluation pipeline for comparing prompt and RAG configurations across a reusable Kubernetes incident dataset.
+
+The benchmark below evaluates **15 incident scenarios across four experiment configurations**, comparing:
+
+- Prompt V1 vs Prompt V2
+- RAG enabled vs disabled
+- RCA quality score
+- Inference latency
+- Token consumption
+- Estimated LLM cost
+
+The evaluation pipeline automatically ranks experiments and identifies the best-performing configuration instead of relying on manual prompt selection.
+
+![LLMOps Evaluation Benchmark](docs/images/llmops-evaluation-benchmark.png)
+
+In this evaluation run, **Prompt V1 with RAG** ranked first with an aggregate score of **0.770** across 15 incident scenarios. The report also preserves per-incident results for cases including OOMKilled, CrashLoopBackOff, DNS failures, readiness failures, high CPU, database connectivity failures, and API rate limiting.
+
 ---
+
+### Experiment Comparison
+
+The evaluation framework compares prompt versions and RAG configurations using the same incident cases, making changes measurable across quality, latency, token usage, and estimated inference cost.
+
+![LLM Evaluation Experiment Leaderboard](docs/images/llm-evaluation-leaderboard.png)
+
+The leaderboard provides a repeatable way to compare candidate configurations and identify regress
+
+### Benchmark Comparison
+
+The benchmark compares candidate LLM configurations across response quality, latency, token usage, and estimated inference cost, making the quality/cost trade-off visible before configuration promotion.
+
+![LLM Benchmark Summary](docs/images/llm-benchmark-summary.png)
 
 ## CI Quality Gates
 
@@ -340,12 +374,35 @@ The LLMOps evaluation workflow contains two independent gates:
 Prompt Quality Gate
 RAG Retrieval Gate
 ```
+### Automated Prompt Regression Gate
+
+LLM quality is enforced through CI/CD using an automated prompt regression gate. Every relevant change can be evaluated before promotion, helping prevent prompt or workflow changes from silently degrading incident-analysis quality.
+
+![Prompt Regression Gate](docs/images/prompt-regression-gate-runs.png)
 
 ### Prompt Quality Gate
 
 The prompt gate runs regression tests and compares an approved baseline against a candidate configuration.
 
 A degraded candidate can therefore fail CI instead of being promoted simply because its output looks reasonable in a manual test.
+
+### CI/CD Quality Gates for LLM and RAG Changes
+
+The delivery pipeline validates both **prompt quality** and **RAG retrieval quality** before accepting changes. GitHub Actions runs independent quality gates so regressions in model behavior or retrieval performance can fail CI before reaching production.
+
+![LLMOps Quality Gates](docs/images/llmops-quality-gates.png)
+
+The CI pipeline runs regression tests, generates deterministic experiment results, executes the prompt quality gate, and publishes evaluation artifacts. A regression can therefore fail the pipeline instead of being discovered after deployment.
+
+![Prompt Quality Gate CI Pipeline](docs/images/prompt-quality-gate-ci.png)
+
+### RAG Impact Analysis
+
+RAG effectiveness is evaluated per incident rather than assumed to improve every RCA. The evaluation pipeline compares identical incident scenarios with and without retrieval and classifies the impact as **HELPED**, **HURT**, or **NEUTRAL**.
+
+![RAG Impact Analysis](docs/images/rag-impact-analysis.png)
+
+This analysis exposed cases where retrieved context degraded RCA quality, providing evidence for retrieval tuning, runbook expansion, and selective RAG usage instead of enabling retrieval blindly for every incident.
 
 ### RAG Retrieval Gate
 
@@ -373,6 +430,14 @@ uploads evaluation artifacts
 This was an important design choice for the project: RAG changes are treated as testable software changes.
 
 ---
+
+### RAG-Grounded Root Cause Analysis
+
+The RCA agent retrieves Kubernetes troubleshooting runbooks and injects the relevant operational context into the LLM analysis.
+
+![RAG CrashLoopBackOff Runbook Trace](docs/images/rag-crashloop-runbook-trace.png)
+
+This trace demonstrates a CrashLoopBackOff investigation grounded with troubleshooting symptoms and operational runbook context rather than relying solely on the model's internal knowledge.
 
 ## Safety and Remediation Guardrails
 
@@ -451,11 +516,21 @@ This makes it possible to inspect individual executions and see what context was
 
 This became particularly useful while testing different runbooks and prompt versions because the behavior could be inspected at the individual trace level instead of relying only on terminal output.
 
-<!-- SCREENSHOT: LangSmith trace list -->
+### LLM Observability & Tracing
 
-<!-- SCREENSHOT: Individual LangSmith trace showing retrieved runbook context -->
+LLM-powered incident analysis is instrumented with LangSmith tracing, providing visibility into the prompts, retrieved runbook context, model execution, and RCA workflow.
 
----
+![LangSmith Kubernetes Incident Trace](docs/images/langsmith-incident-trace.png)
+
+The trace below shows an OOMKilled incident analysis where Kubernetes runbook context is supplied to the RCA workflow, making the AI investigation observable and auditable rather than operating as a black box.
+
+### AI-Powered Root Cause Analysis
+
+The RCA agent analyzes Kubernetes incident context and produces structured operational guidance including the detected root cause, severity, confidence score, and recommended remediation actions.
+
+![OOMKilled AI Root Cause Analysis](docs/images/oomkilled-ai-rca.png)
+
+In this OOMKilled scenario, the system identified an insufficient container memory limit as the likely root cause and recommended memory resource adjustments and application-level memory investigation. The inference path also records model usage, token consumption, latency, and estimated cost for LLMOps observability.
 
 ## Token, Cost and Latency Observability
 
@@ -487,15 +562,13 @@ estimated cost
 
 This makes LLM behavior observable as an operational dependency rather than treating model calls as a black box.
 
-<!-- SCREENSHOT: LangSmith monitoring -->
+### Production LLM Observability
 
-<!-- SCREENSHOT: token_chart.png -->
+Every AI-driven incident analysis is traced through LangSmith, providing execution-level visibility into model calls and inference latency.
 
-<!-- SCREENSHOT: latency_chart.png -->
+![Production LLM Traces](docs/images/langsmith-production-traces.png)
 
-<!-- SCREENSHOT: cost_chart.png -->
-
----
+Multiple Kubernetes incident-analysis runs are captured successfully with per-request latency, enabling production debugging and performance analysis of the LLM pipeline.
 
 ## API Gateway
 
@@ -525,9 +598,13 @@ FastAPI also provides interactive OpenAPI/Swagger documentation at:
 /docs
 ```
 
-<!-- SCREENSHOT: Kubernetes Incident AI Copilot Swagger UI -->
+### Incident Analysis API
 
----
+The platform exposes the AI incident-analysis workflow through a FastAPI REST API, providing a simple integration point for Kubernetes monitoring, alerting, and automation systems.
+
+![Kubernetes Incident Analysis API](docs/images/incident-analysis-api.png)
+
+The `POST /analyze` endpoint triggers the end-to-end incident analysis workflow and returns structured RCA results, allowing the LLMOps pipeline to be consumed programmatically rather than only through local scripts.
 
 ## Testing
 
@@ -695,7 +772,13 @@ The generated vector store is stored under:
 rag/vector_store/
 ```
 
----
+## Testing & Validation
+
+The project includes automated tests covering the LLMOps workflow, regression controls, API behavior, RAG components, and supporting platform logic.
+
+The current test suite completes successfully with **42 tests passing**, while regression-threshold checks are validated before changes progress through the delivery workflow.
+
+![Automated Test Suite](docs/images/automated-test-suite.png)
 
 ## Run the Tests
 
