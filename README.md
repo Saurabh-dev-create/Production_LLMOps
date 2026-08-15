@@ -82,7 +82,7 @@ The incident-analysis workflow is exposed through a FastAPI API, providing a wor
 
 ![Kubernetes Incident Analysis API](docs/images/incident-analysis-api.png)
 
-The `POST /analyze` endpoint executes the incident workflow and returns structured analysis results. This provides an early proof point that the project is an executable system rather than only an architecture or evaluation exercise.
+The `POST /analyze` endpoint is wired to invoke the incident-analysis workflow and expose structured workflow results. This provides an early proof point for the service interface before the component-level implementation details.
 
 ---
 
@@ -289,7 +289,7 @@ RAG effectiveness is evaluated per incident rather than assumed to improve every
 
 ![RAG Impact Analysis](docs/images/rag-impact-analysis.png)
 
-This analysis exposed cases where retrieved context degraded RCA quality, providing evidence for retrieval tuning, runbook expansion, and selective RAG usage instead of enabling retrieval blindly for every incident. 
+This analysis exposed cases where retrieved context degraded RCA quality, providing evidence for retrieval tuning, runbook expansion, and selective RAG usage instead of enabling retrieval blindly for every incident.
 
 ## RAG Evaluation
 
@@ -374,7 +374,7 @@ The evaluation framework compares prompt versions and RAG configurations using t
 
 ![LLM Evaluation Experiment Leaderboard](docs/images/llm-evaluation-leaderboard.png)
 
-The leaderboard provides a repeatable way to compare candidate configurations and identify regress
+The leaderboard provides a repeatable way to compare candidate configurations and identify regressions.
 
 ### Benchmark Comparison
 
@@ -609,14 +609,6 @@ FastAPI also provides interactive OpenAPI/Swagger documentation at:
 /docs
 ```
 
-### Incident Analysis API
-
-The platform exposes the AI incident-analysis workflow through a FastAPI REST API, providing a simple integration point for Kubernetes monitoring, alerting, and automation systems.
-
-![Kubernetes Incident Analysis API](docs/images/incident-analysis-api.png)
-
-The `POST /analyze` endpoint triggers the end-to-end incident analysis workflow and returns structured RCA results, allowing the LLMOps pipeline to be consumed programmatically rather than only through local scripts.
-
 ## Testing
 
 The project uses pytest for unit, integration, regression, retrieval, safety, and configuration tests.
@@ -787,7 +779,7 @@ rag/vector_store/
 
 The project includes automated tests covering the LLMOps workflow, regression controls, API behavior, RAG components, and supporting platform logic.
 
-The current test suite completes successfully with **42 tests passing**, while regression-threshold checks are validated before changes progress through the delivery workflow.
+The final local validation suite completes successfully with **70 tests passing**.
 
 ![Automated Test Suite](docs/images/automated-test-suite.png)
 
